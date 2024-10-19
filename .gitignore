@@ -2,3 +2,5 @@
 city_coordinates_cache.json
 cities_coordinates.csv
 crime_dataset_india.csv
+main.py
+/venv

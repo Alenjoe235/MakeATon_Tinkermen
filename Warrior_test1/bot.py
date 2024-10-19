@@ -7,7 +7,7 @@ load_dotenv()
 
 class MentalHealthChatbot:
     def __init__(self, api_key):
-        genai.configure(api_key="AIzaSyA28ESjc0LhklwQ3M-F2KaLNOD9fZGpYLQ")
+        genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-pro')
         self.chat = self.model.start_chat(history=[])
         self.system_prompt = """
@@ -36,11 +36,12 @@ class MentalHealthChatbot:
 
 def main(page: ft.Page):
     page.title = "Mental Health Chatbot"
-    page.theme_mode = ft.ThemeMode.LIGHT
+    page.theme_mode = ft.ThemeMode.DARK
     page.padding = 20
-    page.window_width = 400
-    page.window_height = 700
-    page.window_resizable = False
+    page.window.width = 400
+    page.window.height = 700
+    page.window.resizable = False
+    page.bgcolor = "#101010"  # Very dark red background
 
     api_key = os.getenv("GOOGLE_API_KEY_2")
     chatbot = MentalHealthChatbot(api_key)
@@ -52,16 +53,15 @@ def main(page: ft.Page):
     )
 
     def add_message(sender, message):
-        chat_area.controls.append(
-            ft.Container(
-                content=ft.Text(f"{sender}: {message}"),
-                bgcolor=ft.colors.BLUE_50 if sender == "You" else ft.colors.GREY_100,
-                border_radius=10,
-                padding=10,
-                width=300,
-                alignment=ft.alignment.center_right if sender == "You" else ft.alignment.center_left,
-            )
+        new_message = ft.Container(
+            content=ft.Text(f"{sender}: {message}", color="#FFD6D6"),  # Light pink text
+            bgcolor="#4A0E0E" if sender == "You" else "#2D0A0A",  # Dark red for user, darker red for counselor
+            border_radius=10,
+            padding=10,
+            width=300,
+            alignment=ft.alignment.center_right if sender == "You" else ft.alignment.center_left,
         )
+        chat_area.controls.append(new_message)
         page.update()
 
     def send_message(e):
@@ -77,17 +77,29 @@ def main(page: ft.Page):
 
     user_input = ft.TextField(
         hint_text="Type your message here...",
+        border_color="#8B0000",  # Dark red border
+        cursor_color="#8B0000",  # Light pink cursor
+        color="#101010",  # Light pink text
+        bgcolor="#F0F0F0",  # Dark background
         expand=True,
         on_submit=send_message
     )
 
     send_button = ft.IconButton(
         icon=ft.icons.SEND,
+        icon_color="#FFD6D6",  # Light pink icon
         on_click=send_message
     )
 
+    title = ft.Text(
+        "Mental Health Chatbot",
+        size=24,
+        weight=ft.FontWeight.BOLD,
+        color="#FFFFF0",  # Light pink title
+    )
+
     page.add(
-        ft.Text("Mental Health Chatbot", size=24, weight=ft.FontWeight.BOLD),
+        title,
         chat_area,
         ft.Row([user_input, send_button])
     )

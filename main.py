@@ -1,5 +1,5 @@
 # Install the required packages if not already installed
-!pip install google-generativeai seaborn
+
 
 import os
 import sys

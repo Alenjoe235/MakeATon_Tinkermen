@@ -138,7 +138,7 @@ def main(page: ft.Page):
         page.controls.clear()
 
         logo = ft.Image(
-            src=r"C:\Users\jojithomas pta\Downloads\warrior-removebg.png",
+            src=r"warrior.jpeg",
             width=700,
             height=700,
         )
